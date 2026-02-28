@@ -1,0 +1,85 @@
+.TH WRITEBETTERER 1 "February 2026" "writebetterer" "User Commands"
+.SH NAME
+writebetterer \- rewrite or query text using an LLM
+.SH SYNOPSIS
+.B writebetterer
+[\fB\-mode\fR \fItype\fR]
+[\fB\-model\fR \fIname\fR]
+[\fB\-provider\fR \fIname\fR]
+[\fB\-prompt\fR]
+[\fB\-v\fR]
+.SH DESCRIPTION
+.B writebetterer
+reads text from standard input, sends it to an LLM, and writes the result to
+standard output.
+.PP
+By default it classifies the input as code, configuration, or prose, then
+rewrites it with appropriate improvements. With the \fB\-prompt\fR flag it
+instead sends the input as a direct query and returns the LLM's response.
+.SH OPTIONS
+.TP
+.BR \-mode " \fItype\fR"
+Content type for rewriting: \fBauto\fR (default), \fBcode\fR, \fBconfig\fR,
+or \fBprose\fR. In \fBauto\fR mode the input is classified automatically.
+Ignored when \fB\-prompt\fR is set.
+.TP
+.BR \-model " \fIname\fR"
+Override the default model selection. When omitted, a model is chosen based on
+the provider and content type.
+.TP
+.BR \-provider " \fIname\fR"
+LLM provider: \fBgemini\fR or \fBclaude\fR. Defaults to the
+\fBWRITEBETTERER_PROVIDER\fR environment variable, then \fBgemini\fR.
+.TP
+.B \-prompt
+Send the input as a direct prompt to the LLM, bypassing classification and
+rewriting. Useful for general\-purpose queries.
+.TP
+.B \-v
+Print provider, mode, and model information to standard error.
+.SH ENVIRONMENT
+.TP
+.B WRITEBETTERER_PROVIDER
+Default LLM provider (\fBgemini\fR or \fBclaude\fR). Overridden by
+\fB\-provider\fR.
+.TP
+.B GEMINI_API_KEY
+API key for the Gemini provider. May be a literal key or an \fBop://\fR
+reference for 1Password lookup.
+.TP
+.B ANTHROPIC_API_KEY
+API key for the Claude provider. May be a literal key or an \fBop://\fR
+reference for 1Password lookup.
+.SH EXAMPLES
+Rewrite prose with automatic detection:
+.PP
+.RS
+echo "Hello wrold, how are you todya?" | writebetterer
+.RE
+.PP
+Rewrite code explicitly:
+.PP
+.RS
+cat main.go | writebetterer \-mode code \-provider claude
+.RE
+.PP
+Ask a question directly:
+.PP
+.RS
+echo "What is the capital of France?" | writebetterer \-prompt
+.RE
+.PP
+Verbose output:
+.PP
+.RS
+echo "Fix this sentense." | writebetterer \-v
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Success.
+.TP
+.B 1
+Error (empty input, invalid flags, API failure).
+.SH AUTHORS
+Matt Sjurseth

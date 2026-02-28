@@ -1,0 +1,12 @@
+#compdef writebetterer
+
+_writebetterer() {
+  _arguments \
+    '-mode[Content type]:type:(auto code config prose)' \
+    '-model[Override model name]:model:' \
+    '-provider[LLM provider]:provider:(gemini claude)' \
+    '-prompt[Send input as a direct prompt]' \
+    '-v[Print mode/model/stats to stderr]'
+}
+
+_writebetterer "$@"
