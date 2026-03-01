@@ -5,8 +5,8 @@ run:
 	go run .
 
 deploy: build install-man install-completion
-	cp writebetterer /Users/msjurseth/Dropbox/Typinator/Includes/Text/
-	cp writebetterer /Users/msjurseth/.local/bin/
+	cp writebetterer ~/Dropbox/Typinator/Includes/Text/
+	cp writebetterer ~/.local/bin/
 
 install-man:
 	install -d /usr/local/share/man/man1
